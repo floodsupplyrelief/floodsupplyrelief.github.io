@@ -52,21 +52,21 @@
         <h1>Request Supplies</h1>
         <div id="verification-step">
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" placeholder="Enter your phone number" />
+            <input type="text" id="phone" placeholder="Enter your phone number" required>
             <button onclick="sendVerificationRequest()">Send Verification Code</button>
             <div id="otp-section" style="display: none;">
                 <label for="otp">Enter OTP:</label>
-                <input type="text" id="otp" placeholder="Enter OTP" />
+                <input type="text" id="otp" placeholder="Enter OTP" required>
                 <button onclick="verifyOtp()">Verify OTP</button>
             </div>
         </div>
         <div id="request-form" style="display: none;">
             <label for="location">Location:</label>
-            <input type="text" id="location" placeholder="Enter your location" />
+            <input type="text" id="location" placeholder="Enter your location" required>
             <label for="district">District:</label>
-            <input type="text" id="district" placeholder="Enter your district" />
+            <input type="text" id="district" placeholder="Enter your district" required>
             <label for="supplies">Supplies Needed:</label>
-            <textarea id="supplies" placeholder="Describe the supplies needed"></textarea>
+            <textarea id="supplies" placeholder="Describe the supplies needed" required></textarea>
             <button onclick="submitRequest()">Submit Request</button>
         </div>
         <div id="message"></div>
