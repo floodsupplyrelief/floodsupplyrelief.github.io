@@ -35,6 +35,11 @@
             padding: 5px 10px;
             cursor: pointer;
         }
+                .no-requests {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +54,12 @@
                 .then(data => {
                     const requestList = document.getElementById('request-list');
                     requestList.innerHTML = '';
+                    if (data.length === 0) {
+                        const noRequestsMessage = document.createElement('div');
+                        noRequestsMessage.className = 'no-requests';
+                        noRequestsMessage.textContent = 'No requests came';
+                        requestList.appendChild(noRequestsMessage);
+                    } else {
                     data.forEach(request => {
                         const requestItem = document.createElement('div');
                         requestItem.className = 'request-item';
@@ -62,7 +73,7 @@
                         `;
                         requestList.appendChild(requestItem);
                     });
-                });
+                }});
         }
 
         function markAsSupplied(reqId) {
