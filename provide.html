@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>KERALA SUPPLY RELIEF</title>
+    <meta name="description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
+<meta name="keywords" content="Kerala, floods, flood relief, food supplies, emergency aid, disaster relief, humanitarian aid, Kerala floods, support, donate">
+
+    <meta property="og:title" content="KERALA SUPPLY RELIEF">
+    <meta property="og:description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .request-list {
+            width: 80%;
+            margin: auto;
+        }
+        .request-item {
+            display: flex;
+            justify-content: space-between;
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="request-list" id="request-list">
+        <!-- Requests will be appended here by JavaScript -->
+    </div>
+
+    <script>
+        function fetchRequests() {
+            fetch('http://a.com/provide')
+                .then(response => response.json())
+                .then(data => {
+                    const requestList = document.getElementById('request-list');
+                    requestList.innerHTML = '';
+                    data.forEach(request => {
+                        const requestItem = document.createElement('div');
+                        requestItem.className = 'request-item';
+                        requestItem.innerHTML = `
+                            <div>
+                                <p><strong>Location:</strong> ${request.location}</p>
+                                <p><strong>District:</strong> ${request.district}</p>
+                                <p><strong>Supplies:</strong> ${request.supplies}</p>
+                            </div>
+                            <button onclick="markAsSupplied('${request.req_id}')">Supplied</button>
+                        `;
+                        requestList.appendChild(requestItem);
+                    });
+                });
+        }
+
+        function markAsSupplied(reqId) {
+            fetch('http://a.com/check', {
+                method: 'POST',
+                headers: {
+                    'req_id': reqId
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert('Request marked as supplied.');
+                    fetchRequests();
+                } else {
+                    alert('Failed to mark as supplied.');
+                }
+            });
+        }
+
+        window.onload = fetchRequests;
+    </script>
+</body>
+</html>
