@@ -9,8 +9,8 @@
 
     <meta property="og:title" content="FLOOD SUPPLY RELIEF">
     <meta property="og:description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
-
-    <style>
+    
+<style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -35,10 +35,13 @@
             padding: 5px 10px;
             cursor: pointer;
         }
-                .no-requests {
+        .no-requests {
             text-align: center;
             font-size: 18px;
             color: #555;
+        }
+        #otp-section {
+            display: none;
         }
     </style>
 </head>
@@ -47,7 +50,16 @@
         <!-- Requests will be appended here by JavaScript -->
     </div>
 
+    <div id="otp-section">
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" placeholder="Enter OTP" />
+        <button onclick="verifyOtp()">Verify OTP</button>
+        <div id="otp-message"></div>
+    </div>
+
     <script>
+        let currentReqId = '';
+
         function fetchRequests() {
             fetch('https://keralarelief.pythonanywhere.com/provide')
                 .then(response => response.json())
@@ -60,36 +72,59 @@
                         noRequestsMessage.textContent = 'No requests came';
                         requestList.appendChild(noRequestsMessage);
                     } else {
-                    data.forEach(request => {
-                        const requestItem = document.createElement('div');
-                        requestItem.className = 'request-item';
-                        requestItem.innerHTML = `
-                            <div>
-                                <p><strong>Location:</strong> ${request.location}</p>
-                                <p><strong>District:</strong> ${request.district}</p>
-                                <p><strong>Supplies:</strong> ${request.supplies}</p>
-                            </div>
-                            <button onclick="markAsSupplied('${request.req_id}')">Supplied</button>
-                        `;
-                        requestList.appendChild(requestItem);
-                    });
-                }});
+                        data.forEach(request => {
+                            const requestItem = document.createElement('div');
+                            requestItem.className = 'request-item';
+                            requestItem.innerHTML = `
+                                <div>
+                                    <p><strong>Location:</strong> ${request.location}</p>
+                                    <p><strong>District:</strong> ${request.district}</p>
+                                    <p><strong>Supplies:</strong> ${request.supplies}</p>
+                                </div>
+                                <button onclick="requestOtp('${request.req_id}')">Supplied</button>
+                            `;
+                            requestList.appendChild(requestItem);
+                        });
+                    }
+                });
         }
 
-        function markAsSupplied(reqId) {
-            fetch('https://keralarelief.pythonanywhere.com/check', {
+        function requestOtp(reqId) {
+            currentReqId = reqId;
+            fetch('https://keralarelief.pythonanywhere.com/sendotp', {
+                method: 'POST',
+                headers: { 'reqid': reqId }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('otp-section').style.display = 'block';
+                } else {
+                    alert('Failed to request OTP');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function verifyOtp() {
+            const otp = document.getElementById('otp').value;
+
+            fetch('https://keralarelief.pythonanywhere.com/verifyotp', {
                 method: 'POST',
                 headers: {
-                    'reqid': reqId
+                    'reqid': currentReqId,
+                    'otp': otp
                 }
-            }).then(response => {
-                if (response.ok) {
-                    alert('Request marked as supplied.');
-                    fetchRequests();
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'correct') {
+                    alert('Supplied successfully');
+                    window.location.href = 'index.html'; // Redirect back to the home page
                 } else {
-                    alert('Failed to mark as supplied.');
+                    alert('OTP wrong');
                 }
-            });
+            })
+            .catch(error => console.error('Error:', error));
         }
 
         window.onload = fetchRequests;
