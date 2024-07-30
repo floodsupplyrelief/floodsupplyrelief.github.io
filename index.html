@@ -11,23 +11,55 @@
     <meta property="og:description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
 
     <style>
-        body {
+            body {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
             text-align: center;
+            background-color: rgb(21, 21, 21);
+            color: white;
+            border-radius: 15px;
         }
         button {
             padding: 10px 20px;
             margin: 10px;
             font-size: 16px;
             cursor: pointer;
+            background-color: rgb(143, 139, 139);
+            color: rgb(21, 21, 21);
+            border-radius: 15px;
         }
+
+        @media only screen and (max-width: 600px){
+            body{
+                
+            }    
+
+            .container{
+                bottom: 500px;
+            }
+        }
+
+        @media only screen and (min-width: 600px) and (max-width: 900px){
+            body{
+              margin-bottom: 0px; 
+            }
+
+            .container{
+                margin-bottom: 500px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -36,6 +68,13 @@
 </p>
         <button onclick="window.location.href='request.html'">Request Supplies (സഹായം ആവശ്യമുണ്ട്)</button>
         <button onclick="window.location.href='provide.html'">Provide Supplies (സഹായിക്കാൻ ആഗ്രഹിക്കുന്നു)</button>
+                <p>Use the desktop mode for better experience</p>
+        <p>മികച്ച അനുഭവത്തിനായി ഡെസ്ക്ടോപ്പ് മോഡ് ഉപയോഗിക്കുക</p>
+
     </div>
+            <footer>
+            <p>developed by <a href="https://www.instagram.com/proprietary.software.builders/" target="_blank">proprietary.software.builders</a></p>
+        </footer>
+
 </body>
 </html>
