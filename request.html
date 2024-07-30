@@ -90,10 +90,11 @@
 
         function verifyOtp() {
             const otp = document.getElementById('otp').value;
+            const phone = document.getElementById('phone').value;
 
             fetch('https://keralarelief.pythonanywhere.com/token', {
                 method: 'GET',
-                headers: { 'token': otp }
+                headers: { 'otp': otp , 'num':phone }
             })
             .then(response => response.json())
             .then(data => {
