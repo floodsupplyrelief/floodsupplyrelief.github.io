@@ -80,7 +80,7 @@
         function sendVerificationRequest() {
             const phone = document.getElementById('phone').value;
 
-            fetch('http://127.0.0.1:5000/verify', {
+            fetch('https://keralarelief.pythonanywhere.com/verify', {
                 method: 'GET',
                 headers: { 'num': phone }
             })
@@ -91,7 +91,7 @@
         function verifyOtp() {
             const otp = document.getElementById('otp').value;
 
-            fetch('http://127.0.0.1:5000/token', {
+            fetch('https://keralarelief.pythonanywhere.com/token', {
                 method: 'GET',
                 headers: { 'token': otp }
             })
@@ -114,7 +114,7 @@
             const supplies = document.getElementById('supplies').value;
             const phone = document.getElementById('phone-number').value;
 
-            fetch('http://127.0.0.1:5000/req', {
+            fetch('https://keralarelief.pythonanywhere.com/req', {
                 method: 'POST',
                 headers: {
                     'location': location,
