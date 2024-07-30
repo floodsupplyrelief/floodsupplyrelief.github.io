@@ -117,6 +117,8 @@
             })
             .then(response => {
                 if (response.ok) {
+                    document.getElementById('request-list').style.display = 'none';
+
                     document.getElementById('otp-section').style.display = 'block';
                 } else {
                     alert('Failed to request OTP');
