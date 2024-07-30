@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KERALA SUPPLY RELIEF</title>
+      <meta name="description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
+<meta name="keywords" content="Kerala, floods, flood relief, food supplies, emergency aid, disaster relief, humanitarian aid, Kerala floods, support, donate">
+
+    <meta property="og:title" content="KERALA SUPPLY RELIEF">
+    <meta property="og:description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input, textarea, button {
+            margin: 5px 0;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form id="request-form">
+        <label for="location">Exact Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="district">District:</label>
+        <input type="text" id="district" name="district" required>
+
+        <label for="supplies">Supplies Needed:</label>
+        <textarea id="supplies" name="supplies" required></textarea>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <button type="submit">Submit Request</button>
+    </form>
+
+    <script>
+        document.getElementById('request-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value;
+            const district = document.getElementById('district').value;
+            const supplies = document.getElementById('supplies').value;
+            const phone = document.getElementById('phone').value;
+
+            fetch('http://a.com/req', {
+                method: 'POST',
+                headers: {
+                    'location': location,
+                    'district': district,
+                    'supplies': supplies,
+                    'phone': phone
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert('Request submitted successfully!');
+                } else {
+                    alert('Failed to submit request.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
