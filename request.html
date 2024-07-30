@@ -19,61 +19,123 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
-        form {
-            display: flex;
-            flex-direction: column;
+        .form-container {
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
-        label, input, textarea, button {
-            margin: 5px 0;
+        input, textarea, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
         }
         button {
-            padding: 10px;
             cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+        }
+        button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
-    <form id="request-form">
-        <label for="location">Exact Location:</label>
-        <input type="text" id="location" name="location" required>
-
-        <label for="district">District:</label>
-        <input type="text" id="district" name="district" required>
-
-        <label for="supplies">Supplies Needed:</label>
-        <textarea id="supplies" name="supplies" required></textarea>
-
-        <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" name="phone" required>
-
-        <button type="submit">Submit Request</button>
-    </form>
+    <div class="form-container">
+        <h1>Request Supplies</h1>
+        <div id="verification-step">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" placeholder="Enter your phone number" />
+            <button onclick="sendVerificationRequest()">Send Verification Code</button>
+            <div id="otp-section" style="display: none;">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" placeholder="Enter OTP" />
+                <button onclick="verifyOtp()">Verify OTP</button>
+            </div>
+        </div>
+        <div id="request-form" style="display: none;">
+            <label for="location">Location:</label>
+            <input type="text" id="location" placeholder="Enter your location" />
+            <label for="district">District:</label>
+            <input type="text" id="district" placeholder="Enter your district" />
+            <label for="supplies">Supplies Needed:</label>
+            <textarea id="supplies" placeholder="Describe the supplies needed"></textarea>
+            <label for="phone-number">Phone Number:</label>
+            <input type="text" id="phone-number" placeholder="Enter your phone number" />
+            <button onclick="submitRequest()">Submit Request</button>
+        </div>
+        <div id="message"></div>
+    </div>
 
     <script>
-        document.getElementById('request-form').addEventListener('submit', function(event) {
-            event.preventDefault();
+        let token = '';
+
+        function sendVerificationRequest() {
+            const phone = document.getElementById('phone').value;
+
+            fetch('http://127.0.0.1:5000/verify', {
+                method: 'GET',
+                headers: { 'num': phone }
+            })
+            .then(response => response.ok ? document.getElementById('otp-section').style.display = 'block' : alert('Failed to send verification code'))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function verifyOtp() {
+            const otp = document.getElementById('otp').value;
+
+            fetch('http://127.0.0.1:5000/token', {
+                method: 'GET',
+                headers: { 'token': otp }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    token = data.token;
+                    document.getElementById('verification-step').style.display = 'none';
+                    document.getElementById('request-form').style.display = 'block';
+                } else {
+                    alert('Invalid OTP');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function submitRequest() {
             const location = document.getElementById('location').value;
             const district = document.getElementById('district').value;
             const supplies = document.getElementById('supplies').value;
-            const phone = document.getElementById('phone').value;
+            const phone = document.getElementById('phone-number').value;
 
-            fetch('https://keralarelief.pythonanywhere.com/req', {
+            fetch('http://127.0.0.1:5000/req', {
                 method: 'POST',
                 headers: {
                     'location': location,
                     'district': district,
                     'supplies': supplies,
-                    'phone': phone
+                    'phone': phone,
+                    'Authorization': `Bearer ${token}`
                 }
-            }).then(response => {
+            })
+            .then(response => {
                 if (response.ok) {
-                    alert('Request submitted successfully!');
+                    document.getElementById('message').textContent = 'Request submitted successfully!';
+                    document.getElementById('request-form').reset();
                 } else {
-                    alert('Failed to submit request.');
+                    alert('Failed to submit request');
                 }
-            });
-        });
+            })
+            .catch(error => console.error('Error:', error));
+        }
     </script>
 </body>
 </html>
+
 
