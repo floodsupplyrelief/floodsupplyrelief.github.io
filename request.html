@@ -67,8 +67,6 @@
             <input type="text" id="district" placeholder="Enter your district" />
             <label for="supplies">Supplies Needed:</label>
             <textarea id="supplies" placeholder="Describe the supplies needed"></textarea>
-            <label for="phone-number">Phone Number:</label>
-            <input type="text" id="phone-number" placeholder="Enter your phone number" />
             <button onclick="submitRequest()">Submit Request</button>
         </div>
         <div id="message"></div>
@@ -113,7 +111,7 @@
             const location = document.getElementById('location').value;
             const district = document.getElementById('district').value;
             const supplies = document.getElementById('supplies').value;
-            const phone = document.getElementById('phone-number').value;
+            const phone = document.getElementById('phone').value;
 
             fetch('https://keralarelief.pythonanywhere.com/req', {
                 method: 'POST',
