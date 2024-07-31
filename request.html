@@ -63,7 +63,8 @@
                     'location': location,
                     'district': district,
                     'supplies': supplies,
-                    'phone': phone
+                    'phone': phone,
+                    'token':localStorage.getItem('t') 
                 }
             }).then(response => {
                 if (response.ok) {
