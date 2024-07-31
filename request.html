@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FLOOD SUPPLY RELIEF</title>
+    <title>KERALA SUPPLY RELIEF</title>
       <meta name="description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
 <meta name="keywords" content="Kerala, floods, flood relief, food supplies, emergency aid, disaster relief, humanitarian aid, Kerala floods, support, donate">
 
-    <meta property="og:title" content="FLOOD SUPPLY RELIEF">
+    <meta property="og:title" content="KERALA SUPPLY RELIEF">
     <meta property="og:description" content="കേരളത്തിൽ പ്രളയകാലത്ത് ഭക്ഷണവും മറ്റു അവശ്യ വസ്തുക്കളും നൽകുന്ന സേവനത്തിനായി ഞങ്ങൾ ഈ വെബ്സൈറ്റ് നിർമ്മിച്ചിരിക്കുന്നു. പ്രളയബാധിതർക്കായി സഹായം എത്തിക്കുന്നതിൽ നിങ്ങൾക്കും പങ്കാളികളാകാം, പ്രളയസമയങ്ങളിൽ സഹായം നൽകുക.">
 
     <style>
@@ -19,122 +19,60 @@
             height: 100vh;
             background-color: #f0f0f0;
         }
-        .form-container {
-            width: 80%;
-            max-width: 600px;
-            background: white;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        form {
+            display: flex;
+            flex-direction: column;
         }
-        input, textarea, button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+        label, input, textarea, button {
+            margin: 5px 0;
         }
         button {
+            padding: 10px;
             cursor: pointer;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-        }
-        button:disabled {
-            background-color: #ddd;
-            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Request Supplies</h1>
-        <div id="verification-step">
-            <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" placeholder="Enter your phone number" required>
-            <button onclick="sendVerificationRequest()">Send Verification Code</button>
-            <div id="otp-section" style="display: none;">
-                <label for="otp">Enter OTP:</label>
-                <input type="text" id="otp" placeholder="Enter OTP" required>
-                <button onclick="verifyOtp()">Verify OTP</button>
-            </div>
-        </div>
-        <div id="request-form" style="display: none;">
-            <label for="location">Location:</label>
-            <input type="text" id="location" placeholder="Enter your location" required>
-            <label for="district">District:</label>
-            <input type="text" id="district" placeholder="Enter your district" required>
-            <label for="supplies">Supplies Needed:</label>
-            <textarea id="supplies" placeholder="Describe the supplies needed" required></textarea>
-            <button onclick="submitRequest()">Submit Request</button>
-        </div>
-        <div id="message"></div>
-    </div>
+    <form id="request-form">
+        <label for="location">Exact Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="district">District:</label>
+        <input type="text" id="district" name="district" required>
+
+        <label for="supplies">Supplies Needed:</label>
+        <textarea id="supplies" name="supplies" required></textarea>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <button type="submit">Submit Request</button>
+    </form>
 
     <script>
-        let token = '';
-
-        function sendVerificationRequest() {
-            const phone = document.getElementById('phone').value;
-
-            fetch('https://keralarelief.pythonanywhere.com/verify', {
-                method: 'GET',
-                headers: { 'num': phone }
-            })
-            .then(response => response.ok ? document.getElementById('otp-section').style.display = 'block' : alert('Failed to send verification code'))
-            .catch(error => console.error('Error:', error));
-        }
-
-        function verifyOtp() {
-            const otp = document.getElementById('otp').value;
-            const phone = document.getElementById('phone').value;
-
-            fetch('https://keralarelief.pythonanywhere.com/token', {
-                method: 'GET',
-                headers: { 'otp': otp , 'num':phone }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.token) {
-                    token = data.token;
-                    document.getElementById('verification-step').style.display = 'none';
-                    document.getElementById('request-form').style.display = 'block';
-                } else {
-                    alert('Invalid OTP');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        function submitRequest() {
+        document.getElementById('request-form').addEventListener('submit', function(event) {
+            event.preventDefault();
             const location = document.getElementById('location').value;
             const district = document.getElementById('district').value;
             const supplies = document.getElementById('supplies').value;
             const phone = document.getElementById('phone').value;
 
-            fetch('https://keralarelief.pythonanywhere.com/req', {
+            fetch('https://Floodsupply.pythonanywhere.com/req', {
                 method: 'POST',
                 headers: {
                     'location': location,
                     'district': district,
                     'supplies': supplies,
-                    'phone': phone,
-                    'token': token
+                    'phone': phone
                 }
-            })
-            .then(response => {
+            }).then(response => {
                 if (response.ok) {
-                    document.getElementById('message').textContent = 'Request submitted successfully!';
-                    document.getElementById('request-form').reset();
+                    alert('Request submitted successfully!');
                 } else {
-                    alert('Failed to submit request');
+                    alert('Failed to submit request.');
                 }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+            });
+        });
     </script>
 </body>
 </html>
-
-
