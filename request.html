@@ -66,16 +66,14 @@
                     'phone': phone,
              
                 }
-            }).then(response => response.json())
-.then(data => {
+            }).then(response => response.json()).then(data => {
     if (data.req_id && data.token) {
         localStorage.setItem(data.req_id, data.token);
         alert('Request submitted successfully!');
     } else {
         alert('Failed to submit request.');
     }
-})
-.catch(error => {
+}).catch(error => {
     console.error('Error:', error);
     alert('Failed to submit request.');
 });
