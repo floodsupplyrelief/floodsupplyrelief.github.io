@@ -70,6 +70,7 @@
     if (data.req_id && data.token) {
         localStorage.setItem(data.req_id, data.token);
         alert('Request submitted successfully!');
+        window.location.href='index.html';
     } else {
         alert('Failed to submit request.');
     }
