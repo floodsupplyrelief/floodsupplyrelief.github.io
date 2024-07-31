@@ -64,10 +64,11 @@
                     'district': district,
                     'supplies': supplies,
                     'phone': phone,
-                    'token':localStorage.getItem('t') 
+             
                 }
             }).then(response => {
                 if (response.ok) {
+                    localStorage.setItem(response.req_id, response.token);
                     alert('Request submitted successfully!');
                 } else {
                     alert('Failed to submit request.');
