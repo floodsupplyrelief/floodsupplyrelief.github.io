@@ -85,9 +85,7 @@
             fetch('https://Floodsupply.pythonanywhere.com/check', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ req_id: reqId })
+                    'reqid': reqId }, 
             }).then(response => {
                 if (response.ok) {
                     alert('Request marked as supplied.');
